@@ -14,8 +14,10 @@ namespace MonoCompilerDemo
                 new CompilerSettings(),
                 new Report(new ConsoleReportPrinter()));
 
+            // Make it reference our own assembly so it can use IFoo
             evaluator.ReferenceAssembly(typeof(IFoo).Assembly);
 
+            // Feed it some code
             evaluator.Compile(
                 @"
     public class Foo : MonoCompilerDemo.IFoo
@@ -28,14 +30,10 @@ namespace MonoCompilerDemo
                 string line = Console.ReadLine();
                 if (line == null) break;
 
-                try
-                {
-                    Console.WriteLine(evaluator.Evaluate(line));
-                }
-                catch (ArgumentException e)
-                {
-                    Console.WriteLine(e.Message);
-                }
+                object result;
+                bool result_set;
+                evaluator.Evaluate(line, out result, out result_set);
+                if (result_set) Console.WriteLine(result);
             }
         }
     }
