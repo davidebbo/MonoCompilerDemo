@@ -10,9 +10,8 @@ namespace MonoCompilerDemo
     {
         static void Main(string[] args)
         {
-            var evaluator = new Evaluator(
-                new CompilerSettings(),
-                new Report(new ConsoleReportPrinter()));
+            var compilerContext = new CompilerContext(new CompilerSettings(), new ConsoleReportPrinter());
+            var evaluator = new Evaluator(compilerContext);
 
             // Make it reference our own assembly so it can use IFoo
             evaluator.ReferenceAssembly(typeof(IFoo).Assembly);
